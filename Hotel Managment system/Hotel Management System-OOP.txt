@@ -1,0 +1,1339 @@
+#include<iostream>
+#include<cstdlib>
+#include<ctime>
+#include<fstream>
+#include<string>
+using namespace std;
+class Hotel
+{
+protected:
+	//memeber variables
+	string fullName, gender, CNIC, roomType;
+	int ID, age, balance, totDaysReserve, floorNumber, roomNumber;
+public:
+	//Viratual Function
+	virtual void reserveRoom() = 0;
+	virtual void checkInRoom() = 0;
+	virtual void ViewReservedroom() = 0;
+	virtual void seereport() = 0;
+	virtual void disp() = 0;
+	virtual void write_Data() = 0;
+	virtual void read_Data() = 0;
+};
+
+class Standard :public Hotel
+{
+public:
+	void read_Reserve_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				if (this->getterRoomType() == "Reserve" || this->getterRoomType() == "reserve")
+				{
+					this->disp();
+				}
+			}
+		}
+	}
+	void read_Data()// Read Data form File.//
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				disp();
+			}
+		}
+	}
+	void write_Data()// Write Data in File.//
+	{
+		fstream fout;
+		fout.open("customer.txt", ios::app);
+		if (!fout)
+		{
+			cout << "File Does Not Exist:" << endl;
+		}
+		else
+		{
+			fout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+				<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+				<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+		}
+	}
+	void disp()// Display Data.//
+	{
+		cout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+			<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+			<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+	}
+	void reserveRoom()// Get Information For Reserve room.//
+	{
+		srand(time(0));
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void checkInRoom()// Get Information For Checkin room.//
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void ViewReservedroom()// View reserve room.//
+	{
+		read_Reserve_Data();
+	}
+	void seereport()//See Report.//
+	{
+		read_Data();
+	}
+	string getterFullName()// return Full Name.//
+	{
+		return this->fullName;
+	}
+	string getterGender()// return Gender.//
+	{
+		return this->gender;
+	}
+	string getterCNIC()//Return CNIC.//
+	{
+		return this->CNIC;
+	}
+	string getterRoomType()//Return room type.//
+	{
+		return this->roomType;
+	}
+	int getterAge()//return Age.//
+	{
+		return this->age;
+	}
+	int getterBalance()//return Balance.//
+	{
+		return this->balance;
+	}
+	int getterID()//return ID.//
+	{
+		return this->ID;
+	}
+	int getterTotDaysReserve()//return Total days Reserve.//
+	{
+		return this->totDaysReserve;
+	}
+	int getterFloorNum()//return Floor Number.//
+	{
+		return this->floorNumber;
+	}
+	int getterRoomNum()//return Room Number.//
+	{
+		return this->roomNumber;
+	}
+	void setterFullName()//Take Full Name.//
+	{
+		cout << "Enter the Full Name: ";
+		getline(cin, fullName);
+		for (int i = 0; i < fullName.length(); i++)// Insert underscore instead space.//
+		{
+			if (this->fullName.at(i) == ' ')
+			{
+				this->fullName.at(i) = '_';
+			}
+		}
+	}
+	void setterGender()
+	{
+		cout << "Enter the Gender: ";
+		cin >> gender;
+	}
+	void setterCNIC()// Take CNIC.//
+	{
+		cout << "Enter the CNIC: ";
+		while (true)
+		{
+			cin >> this->CNIC;
+			if (this->CNIC.length() == 15)// Check if length is 15 OR not.//
+			{
+				break;
+			}
+			else
+				cout << "Enter the CNIC 15 character like 33**-**-* ";
+		}
+
+
+	}
+	void setterRoomType()// Take room type.//
+	{
+		cout << "Enter the Room Type:  Reserve/Checkin ";
+		while (true)
+		{
+			getline(cin, this->roomType);// Check Room type is Reserve or checkin.//
+			if (this->roomType == "Reserve" || this->roomType == "Reserve" || this->roomType == "Checkin" || this->roomType == "checkin")
+			{
+				break;
+			}
+			else
+				cout << "Enter the Room Type:  Reserved/Checkin ";
+		}
+	}
+	void setterAge()
+	{
+		cout << "Enter the Age: ";
+		cin >> this->age;
+	}
+	void setterbalance()
+	{
+		cout << "Enter the Balance: ";
+		cin >> this->balance;
+	}
+	void setterTotDaysReserve()
+	{
+		cout << "Enter the Total Days Reserve: ";
+		cin >> this->totDaysReserve;
+	}
+	void setterFlorrNum()
+	{
+		cout << "Enter the Floor Number: ";
+		cin >> this->floorNumber;
+	}
+	void setterRoomNumber()
+	{
+		cout << "Enter the Room Number: ";
+		cin >> this->roomNumber;
+	}
+};
+
+class Moderate :public Hotel
+{
+
+public:
+	void read_Reserve_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				if (this->getterRoomType() == "Reserve" || this->getterRoomType() == "reserve")
+				{
+					this->disp();
+				}
+			}
+		}
+	}
+
+	//memeber functions
+	void read_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				disp();
+			}
+		}
+	}
+	void write_Data()
+	{
+		fstream fout;
+		fout.open("customer.txt", ios::app);
+		if (!fout)
+		{
+			cout << "File Does Not Exist:" << endl;
+		}
+		else
+		{
+			fout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+				<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+				<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+		}
+	}
+	void disp()
+	{
+		cout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+			<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+			<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+	}
+	void reserveRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void checkInRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void ViewReservedroom()
+	{
+		read_Reserve_Data();
+	}
+	int getterID()
+	{
+		return this->ID;
+	}
+	void seereport()
+	{
+		read_Data();
+	}
+
+	string getterFullName()
+	{
+		return this->fullName;
+	}
+	string getterGender()
+	{
+		return this->gender;
+	}
+	string getterCNIC()
+	{
+		return this->CNIC;
+	}
+	string getterRoomType()
+	{
+		return this->roomType;
+	}
+	int getterAge()
+	{
+		return this->age;
+	}
+	int getterBalance()
+	{
+		return this->balance;
+	}
+	int getterTotDaysReserve()
+	{
+		return this->totDaysReserve;
+	}
+	int getterFloorNum()
+	{
+		return this->floorNumber;
+	}
+	int getterRoomNum()
+	{
+		return this->roomNumber;
+	}
+	void setterFullName()
+	{
+		cout << "Enter the Full Name: ";
+		getline(cin, fullName);
+		for (int i = 0; i < fullName.length(); i++)
+		{
+			if (this->fullName.at(i) == ' ')
+			{
+				this->fullName.at(i) = '_';
+			}
+		}
+	}
+	void setterGender()
+	{
+		cout << "Enter the Gender: ";
+		cin >> gender;
+	}
+	void setterCNIC()
+	{
+		cout << "Enter the CNIC: ";
+		while (true)
+		{
+			cin >> this->CNIC;
+			if (this->CNIC.length() == 15)
+			{
+				break;
+			}
+			else
+				cout << "Enter the CNIC 15 character like 33**-**-* ";
+		}
+
+
+	}
+	void setterRoomType()
+	{
+		cout << "Enter the Room Type:  Reserve/Checkin ";
+		while (true)
+		{
+			getline(cin, this->roomType);
+			if (this->roomType == "Reserve" || this->roomType == "Reserve" || this->roomType == "Checkin" || this->roomType == "checkin")
+			{
+				break;
+			}
+			else
+				cout << "Enter the Room Type:  Reserved/Checkin ";
+		}
+	}
+	void setterAge()
+	{
+		cout << "Enter the Age: ";
+		cin >> this->age;
+	}
+	void setterbalance()
+	{
+		cout << "Enter the Balance: ";
+		cin >> this->balance;
+	}
+	void setterTotDaysReserve()
+	{
+		cout << "Enter the Total Days Reserve: ";
+		cin >> this->totDaysReserve;
+	}
+	void setterFlorrNum()
+	{
+		cout << "Enter the Floor Number: ";
+		cin >> this->floorNumber;
+	}
+	void setterRoomNumber()
+	{
+		cout << "Enter the Room Number: ";
+		cin >> this->roomNumber;
+	}
+};
+
+class Superior :public Hotel
+{
+
+public:
+	//member Function
+	void read_Reserve_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				if (this->getterRoomType() == "Reserve" || this->getterRoomType() == "reserve")
+				{
+					this->disp();
+				}
+			}
+		}
+	}
+
+	void read_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				disp();
+			}
+		}
+	}
+	void write_Data()
+	{
+		fstream fout;
+		fout.open("customer.txt", ios::app);
+		if (!fout)
+		{
+			cout << "File Does Not Exist:" << endl;
+		}
+		else
+		{
+			fout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+				<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+				<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+		}
+	}
+	void disp()
+	{
+		cout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+			<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+			<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+	}
+	void reserveRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void checkInRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void ViewReservedroom()
+	{
+		read_Reserve_Data();
+	}
+	void seereport()
+	{
+		read_Data();
+	}
+	int getterID()
+	{
+		return this->ID;
+	}
+	string getterFullName()
+	{
+		return this->fullName;
+	}
+	string getterGender()
+	{
+		return this->gender;
+	}
+	string getterCNIC()
+	{
+		return this->CNIC;
+	}
+	string getterRoomType()
+	{
+		return this->roomType;
+	}
+	int getterRoomNum()
+	{
+		return this->roomNumber;
+	}
+	int getterAge()
+	{
+		return this->age;
+	}
+	int getterBalance()
+	{
+		return this->balance;
+	}
+	int getterTotDaysReserve()
+	{
+		return this->totDaysReserve;
+	}
+	int getterFloorNum()
+	{
+		return this->floorNumber;
+	}
+	void setterFullName()
+	{
+		cout << "Enter the Full Name: ";
+		getline(cin, fullName);
+		for (int i = 0; i < fullName.length(); i++)
+		{
+			if (this->fullName.at(i) == ' ')
+			{
+				this->fullName.at(i) = '_';
+			}
+		}
+	}
+	void setterGender()
+	{
+		cout << "Enter the Gender: ";
+		cin >> gender;
+	}
+	void setterCNIC()
+	{
+		cout << "Enter the CNIC: ";
+		while (true)
+		{
+			cin >> this->CNIC;
+			if (this->CNIC.length() == 15)
+			{
+				break;
+			}
+			else
+				cout << "Enter the CNIC 15 character like 33**-**-* ";
+		}
+
+
+	}
+	void setterRoomType()
+	{
+		cout << "Enter the Room Type:  Reserve/Checkin ";
+		while (true)
+		{
+			getline(cin, this->roomType);
+			if (this->roomType == "Reserve" || this->roomType == "Reserve" || this->roomType == "Checkin" || this->roomType == "checkin")
+			{
+				break;
+			}
+			else
+				cout << "Enter the Room Type:  Reserved/Checkin ";
+		}
+	}
+	void setterAge()
+	{
+		cout << "Enter the Age: ";
+		cin >> this->age;
+	}
+	void setterbalance()
+	{
+		cout << "Enter the Balance: ";
+		cin >> this->balance;
+	}
+	void setterTotDaysReserve()
+	{
+		cout << "Enter the Total Days Reserve: ";
+		cin >> this->totDaysReserve;
+	}
+	void setterFlorrNum()
+	{
+		cout << "Enter the Floor Number: ";
+		cin >> this->floorNumber;
+	}
+	void setterRoomNumber()
+	{
+		cout << "Enter the Room Number: ";
+		cin >> this->roomNumber;
+	}
+
+};
+
+class JuniorSuite :public Hotel
+{
+public:
+	void read_Reserve_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				if (this->getterRoomType() == "Reserve" || this->getterRoomType() == "reserve")
+				{
+					this->disp();
+				}
+			}
+		}
+	}
+
+	void read_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				disp();
+			}
+		}
+	}
+	void write_Data()
+	{
+		fstream fout;
+		fout.open("customer.txt", ios::app);
+		if (!fout)
+		{
+			cout << "File Does Not Exist:" << endl;
+		}
+		else
+		{
+			fout << getterID() << "\t" << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+				<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+				<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+		}
+	}
+	void disp()
+	{
+		cout << getterID() << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+			<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+			<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+	}
+	void reserveRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void checkInRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	int getterID()
+	{
+		return this->ID;
+	}
+	void ViewReservedroom()
+	{
+		read_Reserve_Data();
+	}
+	void seereport()
+	{
+		read_Data();
+	}
+	string getterFullName()
+	{
+		return this->fullName;
+	}
+	string getterGender()
+	{
+		return this->gender;
+	}
+	string getterCNIC()
+	{
+		return this->CNIC;
+	}
+	string getterRoomType()
+	{
+		return this->roomType;
+	}
+	int getterAge()
+	{
+		return this->age;
+	}
+	int getterBalance()
+	{
+		return this->balance;
+	}
+	int getterRoomNum()
+	{
+		return this->roomNumber;
+	}
+	int getterTotDaysReserve()
+	{
+		return this->totDaysReserve;
+	}
+	int getterFloorNum()
+	{
+		return this->floorNumber;
+	}
+	void setterFullName()
+	{
+		cout << "Enter the Full Name: ";
+		getline(cin, fullName);
+		for (int i = 0; i < fullName.length(); i++)
+		{
+			if (this->fullName.at(i) == ' ')
+			{
+				this->fullName.at(i) = '_';
+			}
+		}
+	}
+	void setterGender()
+	{
+		cout << "Enter the Gender: ";
+		cin >> gender;
+	}
+	void setterCNIC()
+	{
+		cout << "Enter the CNIC: ";
+		while (true)
+		{
+			cin >> this->CNIC;
+			if (this->CNIC.length() == 15)
+			{
+				break;
+			}
+			else
+				cout << "Enter the CNIC 15 character like 33**-**-* ";
+		}
+
+
+	}
+	void setterRoomType()
+	{
+		cout << "Enter the Room Type:  Reserve/Checkin ";
+		while (true)
+		{
+			getline(cin, this->roomType);
+			if (this->roomType == "Reserve" || this->roomType == "Reserve" || this->roomType == "Checkin" || this->roomType == "checkin")
+			{
+				break;
+			}
+			else
+				cout << "Enter the Room Type:  Reserved/Checkin ";
+		}
+	}
+	void setterAge()
+	{
+		cout << "Enter the Age: ";
+		cin >> this->age;
+	}
+	void setterbalance()
+	{
+		cout << "Enter the Balance: ";
+		cin >> this->balance;
+	}
+	void setterTotDaysReserve()
+	{
+		cout << "Enter the Total Days Reserve: ";
+		cin >> this->totDaysReserve;
+	}
+	void setterFlorrNum()
+	{
+		cout << "Enter the Floor Number: ";
+		cin >> this->floorNumber;
+	}
+	void setterRoomNumber()
+	{
+		cout << "Enter the Room Number: ";
+		cin >> this->roomNumber;
+	}
+
+};
+
+class Suite :public Hotel
+{
+
+public:
+	void read_Reserve_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				if (this->getterRoomType() == "Reserve" || this->getterRoomType() == "reserve")
+				{
+					this->disp();
+				}
+			}
+		}
+	}
+
+	void read_Data()
+	{
+		fstream fin;
+		fin.open("customer.txt", ios::in);
+		if (!fin)
+		{
+			cout << "File Does Not Exist: " << endl;
+		}
+		else
+		{
+			while (!fin.eof())
+			{
+				fin >> ID >> fullName >> gender >> CNIC >> roomType >> age >> balance >> totDaysReserve >> floorNumber >> roomNumber;
+				disp();
+			}
+		}
+	}
+	void write_Data()
+	{
+		fstream fout;
+		fout.open("customer.txt", ios::app);
+		if (!fout)
+		{
+			cout << "File Does Not Exist:" << endl;
+		}
+		else
+		{
+			fout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+				<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+				<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+		}
+	}
+	void disp()
+	{
+		cout << getterID() << "\t" << getterFullName() << "\t" << getterGender() << "\t" << getterCNIC() << "\t" << getterRoomType()
+			<< "\t\t" << getterAge() << "\t" << getterBalance() << "\t" << getterTotDaysReserve()
+			<< "\t\t" << getterFloorNum() << "\t\t" << getterRoomNum() << endl;
+	}
+	void reserveRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void checkInRoom()
+	{
+		cin.ignore();
+		setterFullName();
+		setterGender();
+		setterCNIC();
+		cin.ignore();
+		setterRoomType();
+		setterAge();
+		setterbalance();
+		setterTotDaysReserve();
+		setterFlorrNum();
+		setterRoomNumber();
+		ID = rand() % 900 + 99;
+		cout << "Customer ID is: " << ID << endl;
+		system("pause");
+	}
+	void ViewReservedroom()
+	{
+		read_Reserve_Data();
+	}
+	void seereport()
+	{
+		read_Data();
+	}
+	string getterFullName()
+	{
+		return this->fullName;
+	}
+	string getterGender()
+	{
+		return this->gender;
+	}
+	string getterCNIC()
+	{
+		return this->CNIC;
+	}
+	string getterRoomType()
+	{
+		return this->roomType;
+	}
+	int getterRoomNum()
+	{
+		return this->roomNumber;
+	}
+	int getterAge()
+	{
+		return this->age;
+	}
+	int getterID()
+	{
+		return this->ID;
+	}
+	int getterBalance()
+	{
+		return this->balance;
+	}
+	int getterTotDaysReserve()
+	{
+		return this->totDaysReserve;
+	}
+	int getterFloorNum()
+	{
+		return this->floorNumber;
+	}
+	void setterFullName()
+	{
+		cout << "Enter the Full Name: ";
+		getline(cin, fullName);
+		for (int i = 0; i < fullName.length(); i++)
+		{
+			if (this->fullName.at(i) == ' ')
+			{
+				this->fullName.at(i) = '_';
+			}
+		}
+	}
+	void setterGender()
+	{
+		cout << "Enter the Gender: ";
+		cin >> gender;
+	}
+	void setterCNIC()
+	{
+		cout << "Enter the CNIC: ";
+		while (true)
+		{
+			cin >> this->CNIC;
+			if (this->CNIC.length() == 15)
+			{
+				break;
+			}
+			else
+				cout << "Enter the CNIC 15 character like 33**-**-* ";
+		}
+
+
+	}
+	void setterRoomType()
+	{
+		cout << "Enter the Room Type:  Reserve/Checkin ";
+		while (true)
+		{
+			getline(cin, this->roomType);
+			if (this->roomType == "Reserve" || this->roomType == "Reserve" || this->roomType == "Checkin" || this->roomType == "checkin")
+			{
+				break;
+			}
+			else
+				cout << "Enter the Room Type:  Reserved/Checkin ";
+		}
+	}
+	void setterAge()
+	{
+		cout << "Enter the Age: ";
+		cin >> this->age;
+	}
+	void setterbalance()
+	{
+		cout << "Enter the Balance: ";
+		cin >> this->balance;
+	}
+	void setterTotDaysReserve()
+	{
+		cout << "Enter the Total Days Reserve: ";
+		cin >> this->totDaysReserve;
+	}
+	void setterFlorrNum()
+	{
+		cout << "Enter the Floor Number: ";
+		cin >> this->floorNumber;
+	}
+	void setterRoomNumber()
+	{
+		cout << "Enter the Room Number: ";
+		cin >> this->roomNumber;
+	}
+
+};
+void show()
+{
+	cout << "ID\t" << "Full Name\t" << "Gender\t" << "CNIC\t\t" << "Room Type\t" << "Age\t" << "Balance\t" << "TotDaysreserve\t" << "Floor Number\t" << "Room Number" << endl;
+}
+int main()
+{
+	system("color 03");
+	int standard = 0, suite = 0, junior = 0, superior = 0, moderate = 0, n;
+	Hotel* Staptr, * Suiptr, * Junptr, * Supptr, * Modptr;
+	Standard sta[50];
+	Staptr = sta;
+	Suite sui[50];
+	Suiptr = sui;
+	JuniorSuite jun[50];
+	Junptr = jun;
+	Superior sup[50];
+	Supptr = sup;
+	Moderate mod[50];
+	Modptr = mod;
+	cout << "\n\n\n\n\n";
+	cout << "\t\t\t\t  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "\t\t\t\t@@ ____________________________________________________ @@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|	                                               |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|        WELCOME TO HOTEL MANAGMENT SYSTEM           |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                                    |@@" << endl;
+	cout << "\t\t\t\t@@|                                    Created by: H&S |@@" << endl;
+	cout << "\t\t\t\t@@|___________________________________________________ |@@" << endl;
+	cout << "\t\t\t\t   @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+	cout << "\n\t\t\t\t\t\tPress Enter key to continue...";
+	cin.get();
+	system("cls");
+	while (true)
+	{
+		system("cls");
+		cout << "\t\t\t\t ________________________________________________________________\n";
+		cout << "\t\t\t\t|                                           	                  |\n";
+		cout << "\t\t\t\t|                   1 >> For Reserve Room                         |\n";
+		cout << "\t\t\t\t|                   2 >> Checkin Room                             |\n";
+		cout << "\t\t\t\t|                   3 >> View Reserved Room                       |\n";
+		cout << "\t\t\t\t|                   4 >> See Detail Report                        |\n";
+		cout << "\t\t\t\t|                   5 >> Exit:                                    |\n";
+		cout << "\t\t\t\t|_________________________________________________________________|\n";
+		cout << "\t\t\t\tEnter Your Choice: -> ";
+		cin >> n;
+		switch (n)
+		{
+		case 1:
+			system("cls");
+			cout << "\t\t\t\t ________________________________________________________________\n";
+			cout << "\t\t\t\t|                                           	                  |\n";
+			cout << "\t\t\t\t|                   1 >> For Standard Room                        |\n";
+			cout << "\t\t\t\t|                   2 >> For Moderate Room                        |\n";
+			cout << "\t\t\t\t|                   3 >> For Superior Room                        |\n";
+			cout << "\t\t\t\t|                   4 >> For Junior Room                          |\n";
+			cout << "\t\t\t\t|                   5 >> For Suit Romm                            |\n";
+			cout << "\t\t\t\t|                   6 >> Exit:                                    |\n";
+			cout << "\t\t\t\t|_________________________________________________________________|\n";
+			cout << "\t\t\t\tEnter Your Choice: -> ";
+			cin >> n;
+			system("cls");
+			switch (n)
+			{
+			case 1:
+
+				Staptr[standard].reserveRoom();
+				Staptr[standard].write_Data();
+				standard++;
+				break;
+			case 2:
+				Modptr[moderate].reserveRoom();
+				Modptr[moderate].write_Data();
+				moderate++;
+				break;
+			case 3:
+				Supptr[superior].reserveRoom();
+				Supptr[superior].write_Data();
+				superior++;
+				break;
+			case 4:
+				Junptr[junior].reserveRoom();
+				Junptr[junior].write_Data();
+				junior++;
+				break;
+			case 5:
+				Suiptr[suite].reserveRoom();
+				Suiptr[suite].write_Data();
+				suite++;
+				break;
+			default:
+				cout << "You Enter Wrong Input: " << endl;
+			}
+			break;
+		case 2:
+			system("cls");
+			cout << "\t\t\t\t ________________________________________________________________\n";
+			cout << "\t\t\t\t|                                           	                  |\n";
+			cout << "\t\t\t\t|                   1 >> For Standard Room                        |\n";
+			cout << "\t\t\t\t|                   2 >> For Moderate Room                        |\n";
+			cout << "\t\t\t\t|                   3 >> For Superior Room                        |\n";
+			cout << "\t\t\t\t|                   4 >> For Junior Room                          |\n";
+			cout << "\t\t\t\t|                   5 >> For Suit Romm                            |\n";
+			cout << "\t\t\t\t|                   6 >> Exit:                                    |\n";
+			cout << "\t\t\t\t|_________________________________________________________________|\n";
+			cout << "\t\t\t\tEnter Your Choice: -> ";
+			cin >> n;
+			system("cls");
+			switch (n)
+			{
+			case 1:
+
+				Staptr[standard].checkInRoom();
+				Staptr[standard].write_Data();
+				standard++;
+				break;
+			case 2:
+				Modptr[moderate].checkInRoom();
+				Modptr[moderate].write_Data();
+				moderate++;
+				break;
+			case 3:
+				Supptr[superior].checkInRoom();
+				Supptr[superior].write_Data();
+				superior++;
+				break;
+			case 4:
+				Junptr[junior].checkInRoom();
+				Junptr[junior].write_Data();
+				junior++;
+				break;
+			case 5:
+				Suiptr[suite].checkInRoom();
+				Suiptr[suite].write_Data();
+				suite++;
+				break;
+			default:
+				cout << "You Enter Wrong Input: " << endl;
+			}
+			break;
+		case 3:
+			system("cls");
+			cout << "\t\t\t\t ________________________________________________________________\n";
+			cout << "\t\t\t\t|                                           	                  |\n";
+			cout << "\t\t\t\t|                   1 >> For Resreved Standard Room               |\n";
+			cout << "\t\t\t\t|                   2 >> For Resreved Moderate Room               |\n";
+			cout << "\t\t\t\t|                   3 >> For Resreved Superior Room               |\n";
+			cout << "\t\t\t\t|                   4 >> For Resreved Junior Room                 |\n";
+			cout << "\t\t\t\t|                   5 >> For Resreved Suit Romm                   |\n";
+			cout << "\t\t\t\t|                   6 >> Exit:                                    |\n";
+			cout << "\t\t\t\t|_________________________________________________________________|\n";
+			cout << "\t\t\t\tEnter Your Choice: -> ";
+			cin >> n;
+			system("cls");
+			switch (n)
+			{
+			case 1:
+				show();
+				Staptr[0].ViewReservedroom();
+				
+				system("pause");
+				break;
+			case 2:
+				show();
+				Modptr[0].ViewReservedroom();	
+				system("pause");
+				break;
+			case 3:
+				show();
+				Supptr[0].ViewReservedroom();
+				system("pause");
+				break;
+			case 4:
+				show();
+				Junptr[0].ViewReservedroom();
+				system("pause");
+				break;
+
+			case 5:
+				show();
+				Suiptr[0].ViewReservedroom();
+				system("pause");
+				break;
+			default:
+				cout << "You Enter Wrong Input: " << endl;
+			}
+
+			break;
+		case 4:
+			show();
+			Staptr[0].seereport();
+			system("pause");
+			break;
+		case 5:
+			exit(-1);
+			break;
+		default:
+			cout << "You Enter Wrong input: ";
+		}
+
+	}
+
+	return 0;
+}
+
+
+
+
+
+
